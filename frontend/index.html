@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система управління складом</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div id="login-overlay" class="login-overlay">
+        <div class="login-box">
+            <h2 id="auth-title">Вхід у систему</h2>
+            
+            <form id="login-form">
+                <input type="text" id="username" placeholder="Логін" required>
+                <input type="password" id="password" placeholder="Пароль" required>
+                <button type="submit">Увійти</button>
+                <p class="toggle-text">Немає акаунту? <a href="#" id="show-register-btn">Створити</a></p>
+            </form>
+            <p id="login-error" class="error-msg"></p>
+
+            <form id="register-form" class="hidden">
+                <input type="text" id="reg-username" placeholder="Придумайте логін" required>
+                <input type="password" id="reg-password" placeholder="Придумайте пароль" required>
+                <button type="submit" style="background-color: #2ecc71;">Зареєструватися</button>
+                <p class="toggle-text">Вже є акаунт? <a href="#" id="show-login-btn">Увійти</a></p>
+            </form>
+            <p id="register-message" class="error-msg"></p>
+        </div>
+    </div>
+
+    <nav class="top-nav">
+        <div class="nav-tabs">
+            <button id="nav-materials">Склад</button>
+            <button id="nav-projects">Проєкти</button>
+            <button id="nav-logistics">Логістика</button>
+            <button id="nav-analytics">Аналітика</button>
+        </div>
+        
+        <div class="nav-actions">
+            <button id="theme-toggle" class="theme-btn" title="Перемикач теми">🌙</button>
+            <button id="logout-btn" class="logout-btn">Вийти з системи</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="tab-materials" class="tab-content">
+            <h2>Управління матеріалами</h2>
+            
+            <form id="add-material-form" class="data-form">
+                <input type="text" id="mat-name" placeholder="Назва матеріалу" required>
+                <input type="number" id="mat-quantity" placeholder="Кількість" step="0.01" required>
+                <input type="text" id="mat-unit" placeholder="Одиниці виміру" required>
+                <button type="submit">Додати матеріал</button>
+            </form>
+            
+            <button id="download-report-btn" class="action-btn">Завантажити звіт (CSV)</button>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Назва</th>
+                        <th>Залишок</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody id="materials-table-body">
+                    </tbody>
+            </table>
+        </div>
+
+        <div id="tab-projects" class="tab-content hidden">
+            <h2>Будівельні об'єкти</h2>
+            
+            <form id="add-project-form" class="data-form">
+                <input type="text" id="proj-name" placeholder="Назва об'єкту" required>
+                <input type="text" id="proj-address" placeholder="Адреса" required>
+                <button type="submit">Створити об'єкт</button>
+            </form>
+            
+            <h3>Активні будівельні майданчики</h3>
+            <div id="active-projects-list" class="projects-grid"></div>
+            
+            <h3 style="margin-top: 40px; color: var(--text-muted);">Архів завершених проєктів</h3>
+            <div id="archived-projects-list" class="projects-grid"></div>
+        </div>
+
+        <div id="tab-logistics" class="tab-content hidden">
+            <h2>Списання матеріалів на об'єкти</h2>
+            
+            <form id="transfer-form" class="data-form">
+                <select id="transfer-material-id" required>
+                    <option value="">Завантаження матеріалів...</option>
+                </select>
+                
+                <select id="transfer-project-id" required>
+                    <option value="">Завантаження проєктів...</option>
+                </select>
+                
+                <input type="number" id="transfer-quantity" placeholder="Кількість для списання" step="0.01" required>
+                <button type="submit">Списати матеріал</button>
+            </form>
+        </div>
+
+        <div id="tab-analytics" class="tab-content hidden">
+            <h2>Аналітика та прогнозування</h2>
+            
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <h3 style="color: #e74c3c; margin-top: 0;">⚠️ Критичні запаси (Прогноз на 14 днів)</h3>
+                    <div id="forecast-list">Завантаження даних...</div>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3 style="margin-top: 0;">Розподіл матеріалів по об'єктах</h3>
+                    <div class="chart-container">
+                        <canvas id="projectChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="custom-modal" class="custom-modal-overlay hidden">
+        <div class="custom-modal-box">
+            <h3 id="modal-title">Повідомлення</h3>
+            <p id="modal-message">Текст повідомлення</p>
+            <div class="modal-actions">
+                <button id="modal-btn-cancel" class="btn-cancel hidden">Скасувати</button>
+                <button id="modal-btn-confirm" class="btn-confirm">ОК</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
